@@ -42,3 +42,8 @@ body {
 .card {
   border-radius: 1rem !important;
 }
+
+.badge-color {
+  background-color: rgba(255, 0, 0, 0.2) !important;
+  color: rgba(255, 0, 0, 0.4) !important;
+}

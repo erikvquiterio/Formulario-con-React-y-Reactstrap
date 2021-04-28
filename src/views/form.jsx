@@ -20,9 +20,9 @@ export default function FormView() {
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const formSchema = Yup.object().shape({
     nombre: Yup.string().required("Escriba un nombre"),
-    apellido: Yup.string().required("Escriba un nombre"),
+    apellido: Yup.string().required("Escriba un apellido"),
     email: Yup.string().email().required("Escriba un email"),
-    edad: Yup.number().positive(),
+    edad: Yup.number().positive().moreThan(18, "Debes tener más de 18").lessThan(100, "Edad máxima 100 años"),
     condiciones: Yup.boolean(),
   });
 
@@ -61,7 +61,7 @@ export default function FormView() {
                     />
                     {errors.nombre && touched.nombre ? (
                       <div>
-                        <Badge color="danger">{errors.nombre}</Badge>
+                        <Badge className="badge-color">{errors.nombre}</Badge>
                       </div>
                     ) : null}
                   </FormGroup>
@@ -77,7 +77,7 @@ export default function FormView() {
                     />
                     {errors.apellido && touched.apellido ? (
                       <div>
-                        <Badge color="danger">{errors.apellido}</Badge>
+                        <Badge className="badge-color">{errors.apellido}</Badge>
                       </div>
                     ) : null}
                   </FormGroup>
@@ -95,7 +95,7 @@ export default function FormView() {
                     />
                     {errors.email && touched.email ? (
                       <div>
-                        <Badge color="danger">{errors.email}</Badge>
+                        <Badge className="badge-color">{errors.email}</Badge>
                       </div>
                     ) : null}
                   </FormGroup>
@@ -119,7 +119,7 @@ export default function FormView() {
                     <Field
                       name="edad"
                       type="number"
-                      min="1"
+                      min="18"
                       max="100"
                       className="form-control"
                     />
