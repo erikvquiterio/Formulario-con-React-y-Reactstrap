@@ -39,6 +39,10 @@ body {
   padding-bottom: 5%;
 }
 
+.padd-bot-3 {
+  padding-bottom: 3%;
+}
+
 .card {
   border-radius: 1rem !important;
 }
@@ -46,4 +50,12 @@ body {
 .badge-color {
   background-color: rgba(255, 0, 0, 0.2) !important;
   color: rgba(255, 0, 0, 0.4) !important;
+}
+
+.errors {
+  color: rgb(255, 0, 0);
+}
+
+.values {
+  color: rgb(13, 175, 113);
 }

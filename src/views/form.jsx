@@ -5,31 +5,44 @@ import {
   Card,
   CardBody,
   CardTitle,
-  Button,
   FormGroup,
   Label,
   Input,
   Row,
   Col,
   Badge,
+  //Button,
 } from "reactstrap";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
+import Modal from "../components/modal";
 
 export default function FormView() {
+  const options = ["Hombre", "Mujer", "No binario", "Prefiero no decirlo"];
+
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const formSchema = Yup.object().shape({
     nombre: Yup.string().required("Escriba un nombre"),
     apellido: Yup.string().required("Escriba un apellido"),
-    email: Yup.string().email().required("Escriba un email"),
-    edad: Yup.number().positive().moreThan(18, "Debes tener más de 18").lessThan(100, "Edad máxima 100 años"),
-    condiciones: Yup.boolean(),
+    email: Yup.string().email().required("Proporcione un email"),
+    edad: Yup.number()
+      .positive()
+      .moreThan(18, "Debes tener más de 18")
+      .lessThan(100, "Edad máxima 100 años"),
   });
+
+  /*async function onSubmit(values) {
+    const payload = {
+      ...values,
+      condiciones: !disabledSubmit,
+    };
+    console.log(payload);
+  }*/
 
   return (
     <Card>
       <CardBody>
-        <span className="center padd-bot-5">
+        <span className="center padd-bot-3">
           <FontAwesomeIcon icon={faPen} className="icon" />
         </span>
         <CardTitle tag="h5" className="center">
@@ -41,13 +54,13 @@ export default function FormView() {
             nombre: "",
             apellido: "",
             email: "",
-            edad: 1,
-            genero: "Hombre",
-            condiciones: false
+            edad: 18,
+            genero: "Mujer",
           }}
           validationSchema={formSchema}
+          //onSubmit={onSubmit}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, handleChange, handleBlur, values }) => (
             <Form className="padd-top-10">
               <Row form>
                 <Col md={6}>
@@ -105,12 +118,19 @@ export default function FormView() {
                 <Col md={8}>
                   <FormGroup>
                     <Label>Género</Label>
-                    <Input type="select" name="genero">
-                      <option>Hombre</option>
-                      <option>Mujer</option>
-                      <option>No binario</option>
-                      <option>Prefiero no decirlo</option>
-                    </Input>
+                    <select
+                      name="genero"
+                      className="form-control"
+                      value={values.genero}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      {options.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   </FormGroup>
                 </Col>
                 <Col md={4}>
@@ -119,24 +139,39 @@ export default function FormView() {
                     <Field
                       name="edad"
                       type="number"
+                      className="form-control"
                       min="18"
                       max="100"
-                      className="form-control"
                     />
+                    {errors.edad && touched.edad ? (
+                      <div>
+                        <Badge className="badge-color">{errors.edad}</Badge>
+                      </div>
+                    ) : null}
                   </FormGroup>
                 </Col>
               </Row>
               <FormGroup check className="padd-bot-5">
                 <Input
                   type="checkbox"
-                  name="condiciones"
                   onClick={() => setDisabledSubmit(!disabledSubmit)}
                 />
                 <Label check>Acepto los terminos y condiciones</Label>
               </FormGroup>
-              <Button block outline color="primary" disabled={disabledSubmit}>
+              {/*<Button
+                block
+                outline
+                color="primary"
+                disabled={disabledSubmit}
+                type="submit"
+              >
                 Enviar
-              </Button>
+              </Button>*/}
+              <Modal
+                values={values}
+                errors={errors}
+                disabledSubmit={disabledSubmit}
+              />
             </Form>
           )}
         </Formik>
