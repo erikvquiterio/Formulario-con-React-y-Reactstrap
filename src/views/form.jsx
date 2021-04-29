@@ -19,8 +19,7 @@ import Modal from "../components/modal";
 
 export default function FormView() {
   const options = ["Hombre", "Mujer", "No binario", "Prefiero no decirlo"];
-
-  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  //formSchema se encarga de las validaciones y tipo de dato de los campos
   const formSchema = Yup.object().shape({
     nombre: Yup.string().required("Escriba un nombre"),
     apellido: Yup.string().required("Escriba un apellido"),
@@ -30,6 +29,7 @@ export default function FormView() {
       .moreThan(18, "Debes tener más de 18")
       .lessThan(100, "Edad máxima 100 años"),
   });
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
 
   /*async function onSubmit(values) {
     const payload = {
@@ -43,12 +43,16 @@ export default function FormView() {
     <Card>
       <CardBody>
         <span className="center padd-bot-3">
+          {/*Colocamos un ícono importado desde la librería de FontAwesome*/}
           <FontAwesomeIcon icon={faPen} className="icon" />
         </span>
         <CardTitle tag="h5" className="center">
           Formulario con Yup y Formik
         </CardTitle>
+
         <Formik
+          /*Se Inicializan los valores de los campos del formulario y se declara el objeto a 
+          validar en el formulario*/
           enableReinitialize={true}
           initialValues={{
             nombre: "",
@@ -72,6 +76,7 @@ export default function FormView() {
                       placeholder="Escriba un nombre"
                       className="form-control"
                     />
+                    {/*Los campos que se requiera mandar un maneje de error se complementan con el componente Badge*/}
                     {errors.nombre && touched.nombre ? (
                       <div>
                         <Badge className="badge-color">{errors.nombre}</Badge>
@@ -152,6 +157,7 @@ export default function FormView() {
                 </Col>
               </Row>
               <FormGroup check className="padd-bot-5">
+                {/*En el evento onClick ejecutaremos una función que cambiara el estado de los botones y del checkbox*/}
                 <Input
                   type="checkbox"
                   onClick={() => setDisabledSubmit(!disabledSubmit)}
@@ -167,6 +173,7 @@ export default function FormView() {
               >
                 Enviar
               </Button>*/}
+              {/*Enviamos al modal los props correspondiente al estado, valores y errores*/}
               <Modal
                 values={values}
                 errors={errors}
